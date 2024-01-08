@@ -24,7 +24,9 @@ class _HomeState extends State<Home> {
   _remover() async {
     final prefs = await SharedPreferences.getInstance();
     prefs.remove("nome");
-    _textoSalvo = "Nada Salvo!";
+    setState(() {
+      _textoSalvo = "Nada Salvo!";
+    });
   }
 
   @override
