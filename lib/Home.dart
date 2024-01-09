@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -10,86 +9,71 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
 
-  String _textoSalvo = "Nada Salvo!";
-  TextEditingController _controllerCampo = TextEditingController();
-
-  _salvar() async {
-    String valorDigitado = _controllerCampo.text;
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString("nome", valorDigitado);
-    setState(() {
-      _textoSalvo = prefs.getString("nome") ?? "Nada Salvo!";
-    });
-  }
-  _remover() async {
-    final prefs = await SharedPreferences.getInstance();
-    prefs.remove("nome");
-    setState(() {
-      _textoSalvo = "Nada Salvo!";
-    });
-  }
+  final String _titulo = "Dismissible Widget";
+  List _lista = ["Messi", "Cristiano Ronaldo", "Neymar", "Endrick"];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Manipulação de Dados"),
+        title: Text(_titulo),
         backgroundColor: Colors.blue, //Cor de Fundo do Titulo
         foregroundColor: Colors.lightGreenAccent, //Cor do Texto do Titulo
       ),
-      body: Container(
-        padding: EdgeInsets.all(32),
-        child: Column(
-          children: <Widget>[
-            Text(
-              _textoSalvo,
-              style: TextStyle(
-                fontSize: 20
-              ),
-            ),
-            TextField(
-              keyboardType: TextInputType.text,
-              decoration: InputDecoration(
-                labelText: "Digite ALgo"
-              ),
-              controller: _controllerCampo,
-            ),
-            Row(
-              children: <Widget>[
-                ElevatedButton(
-                  style: const ButtonStyle(
-                    backgroundColor: MaterialStatePropertyAll<Color>(Colors.blue),
-                  ),
-                  child: const Text(
-                    "Salvar",
-                    style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.lightGreenAccent
+      body: Column(
+        children: <Widget>[
+          Expanded(
+            child: ListView.builder(
+              itemCount: _lista.length,
+              itemBuilder: (context, index){
+                final item = _lista[index];
+                return Dismissible(
+                  background: Container(
+                    color: Colors.green,
+                    padding: const EdgeInsets.all(20),
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Icon(
+                          Icons.edit,
+                          color: Colors.white,
+                        )
+                      ],
                     ),
                   ),
-                  //color: Colors.orange,
-                  //padding: EdgeInsets.fromLTRB(30, 15, 30, 15),
-                  onPressed: _salvar,
-                ),
-                ElevatedButton(
-                  style: const ButtonStyle(
-                    backgroundColor: MaterialStatePropertyAll<Color>(Colors.blue),
-                  ),
-                  child: const Text(
-                    "Remover",
-                    style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.lightGreenAccent
+                  secondaryBackground: Container(
+                    color: Colors.red,
+                    padding: const EdgeInsets.all(20),
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        Icon(
+                          Icons.delete,
+                          color: Colors.white,
+                        )
+                      ],
                     ),
                   ),
-                  //color: Colors.orange,
-                  //padding: EdgeInsets.fromLTRB(30, 15, 30, 15),
-                  onPressed: _remover,
-                )
-              ],
-            )
-          ],
-        ),
+                  direction: DismissDirection.horizontal,
+                  onDismissed: (direction){
+                    if(direction == DismissDirection.startToEnd){
+                      print("Direção: StartToEnd");
+                    }else if(direction == DismissDirection.endToStart){
+                      print("Direção: EndToStart");
+                      setState(() {
+                        _lista.removeAt(index);
+                      });
+                    }
+                  },
+                  key: Key(item),
+                  child: ListTile(
+                    title: Text(item),
+                  )
+                );
+              }
+            ),
+          )
+        ],
       ),
     );
   }

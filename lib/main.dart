@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:quitanda/Lista.dart';
+import 'Home.dart';
 
 void main() => runApp(
-    MaterialApp(
-      home: Lista(),
+    const MaterialApp(
+      home: Home(),
       debugShowCheckedModeBanner: false,
     )
 );
