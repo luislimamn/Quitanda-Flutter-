@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:quitanda/InoovaMusic.dart';
+import 'Home.dart';
 
 
 void main() => runApp(
     const MaterialApp(
-      home: InoovaMusic(),
+      home: Home(),
       debugShowCheckedModeBanner: false,
     )
 );
