@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
-//import 'package:audioplayers/audio_cache.dart';
 
 class InoovaMusic extends StatefulWidget {
   const InoovaMusic({super.key});
@@ -18,30 +17,19 @@ class _InoovaMusicState extends State<InoovaMusic> {
   _executarOnLine() async {
     audioPlayer.setVolume(_volume);
     if(primeiraExecucao){
-      await audioPlayer.play(UrlSource('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'));
+      await audioPlayer.setSource(AssetSource('audios/tutemumacara.mp3'));
+      //await audioPlayer.play(UrlSource('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'));
       primeiraExecucao = false;
     }else{
       audioPlayer.resume();
     }
 
   }
-  _executarOffLine() async {
-    if(primeiraExecucao){
-      await audioPlayer.play(AssetSource("assets/audios/tuTemUmaCara.mp3"));
-      primeiraExecucao = false;
-    }else{
-      audioPlayer.resume();
-    }
 
-    //await audioPlayer.setSource(AssetSource('assets/audios/tuTemUmaCara.mp3'));
-    //await audioPlayer.resume();
-    //static AudioCache player = new AudioCache();
-    //player.play('tuTemUmaCara.mp3');
-    //AudioCache _audioCache = AudioCache(prefix: "assets/audios/tuTemUmaCara.mp3");
-  }
   _pausar() async {
     await audioPlayer.pause();
   }
+
   _parar() async {
     await audioPlayer.stop();
     primeiraExecucao = true;
